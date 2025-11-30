@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile - RecipeHub</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/profile.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="container nav-container">
+            <div class="nav-brand" onclick="window.location='index.html'">
+                <i class="fas fa-utensils"></i>
+                <span>Recipe<strong>Hub</strong></span>
+            </div>
+            <div class="nav-menu" id="navMenu">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="index.html#recipes" class="nav-link">Recipes</a>
+                <a href="index.html#categories" class="nav-link">Categories</a>
+                <button class="btn btn-primary" id="authBtn">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </button>
+            </div>
+            <div class="nav-toggle" onclick="toggleMenu()">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Profile Content -->
+    <main class="profile-page">
+        <div class="container">
+            <div id="profileContainer">
+                <!-- Profile content will be loaded here -->
+                <div class="loading-profile">
+                    <div class="spinner"></div>
+                    <p>Loading profile...</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Edit Profile Modal -->
+    <div class="modal" id="editProfileModal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeEditProfileModal()">&times;</span>
+            <h2>Edit Profile</h2>
+            <form id="editProfileForm" onsubmit="handleUpdateProfile(event)">
+                <div class="form-group">
+                    <label><i class="fas fa-user"></i> Full Name</label>
+                    <input type="text" id="editFullName" placeholder="Your full name">
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-info-circle"></i> Bio</label>
+                    <textarea id="editBio" rows="4" placeholder="Tell us about yourself"></textarea>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-image"></i> Profile Image URL</label>
+                    <input type="url" id="editProfileImage" placeholder="https://example.com/image.jpg">
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">
+                    <i class="fas fa-save"></i> Save Changes
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
+
+    <script src="js/app.js"></script>
+    <script src="js/profile.js"></script>
+    <script>
+        // Get username from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const username = urlParams.get('user') || (currentUser ? currentUser.username : null);
+        let currentProfileUsername = username;
+
+        if (username) {
+            loadUserProfile(username);
+        } else {
+            document.getElementById('profileContainer').innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-user-slash"></i>
+                    <h2>User not found</h2>
+                    <p>Please log in or provide a valid username</p>
+                    <button class="btn btn-primary" onclick="window.location='index.html'">
+                        Go Home
+                    </button>
+                </div>
+            `;
+        }
+
+        // Show edit profile modal
+        function showEditProfileModal() {
+            document.getElementById('editFullName').value = currentUser.fullName || '';
+            document.getElementById('editBio').value = currentUser.bio || '';
+            document.getElementById('editProfileImage').value = currentUser.profileImageUrl || '';
+            document.getElementById('editProfileModal').classList.add('active');
+        }
+
+        // Close edit profile modal
+        function closeEditProfileModal() {
+            document.getElementById('editProfileModal').classList.remove('active');
+        }
+
+        // Handle update profile
+        async function handleUpdateProfile(event) {
+            event.preventDefault();
+
+            const profileData = {
+                fullName: document.getElementById('editFullName').value,
+                bio: document.getElementById('editBio').value,
+                profileImageUrl: document.getElementById('editProfileImage').value
+            };
+
+            try {
+                showLoading();
+                const response = await fetch(`${API_BASE_URL}/users/${currentUser.id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${authToken}`
+                    },
+                    body: JSON.stringify(profileData)
+                });
+
+                if (response.ok) {
+                    const updatedUser = await response.json();
+                    currentUser = {...currentUser,
+                        ...updatedUser
+                    };
+                    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+
+                    showToast('Profile updated successfully!', 'success');
+                    closeEditProfileModal();
+                    loadUserProfile(username);
+                } else {
+                    showToast('Failed to update profile', 'error');
+                }
+                hideLoading();
+            } catch (error) {
+                console.error('Error updating profile:', error);
+                showToast('Failed to update profile', 'error');
+                hideLoading();
+            }
+        }
+    </script>
+</body>
+
+</html>

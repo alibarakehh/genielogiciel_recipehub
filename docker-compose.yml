@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: recipe-mysql
+    environment:
+      MYSQL_DATABASE: recipedb
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_USER: recipeuser
+      MYSQL_PASSWORD: recipepass
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - recipe-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+  app:
+    build: .
+    container_name: recipe-app
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/recipedb?useSSL=false&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: recipeuser
+      SPRING_DATASOURCE_PASSWORD: recipepass
+    ports:
+      - "8080:8080"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - recipe-network
+    restart: on-failure
+
+volumes:
+  mysql-data:
+
+networks:
+  recipe-network:
+    driver: bridge

@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="RecipeHub - Discover, create, and share amazing recipes with food lovers worldwide">
+    <meta name="keywords" content="recipes, cooking, food, culinary, ingredients, meals">
+    <title>RecipeHub - Professional Recipe Management Platform</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/profile.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="container nav-container">
+            <div class="nav-brand">
+                <i class="fas fa-utensils"></i>
+                <span>Recipe<strong>Hub</strong></span>
+            </div>
+            <div class="nav-menu" id="navMenu">
+                <a href="#home" class="nav-link active">Home</a>
+                <a href="#recipes" class="nav-link">Recipes</a>
+                <a href="#categories" class="nav-link">Categories</a>
+                <a href="#about" class="nav-link">About</a>
+                <button class="btn btn-primary" onclick="showAuthModal()">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </button>
+            </div>
+            <div class="nav-toggle" onclick="toggleMenu()">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-overlay"></div>
+        <div class="container hero-content">
+            <h1 class="hero-title animate-fade-in">
+                Discover Delicious<br>
+                <span class="gradient-text">Recipes</span> Daily
+            </h1>
+            <p class="hero-subtitle animate-fade-in-delay">
+                Explore thousands of recipes, share your own, and connect with food lovers worldwide
+            </p>
+            <div class="hero-buttons animate-fade-in-delay-2">
+                <button class="btn btn-hero-primary" onclick="scrollToRecipes()">
+                    <i class="fas fa-search"></i> Explore Recipes
+                </button>
+                <button class="btn btn-hero-secondary" onclick="showAuthModal('signup')">
+                    <i class="fas fa-user-plus"></i> Join Now
+                </button>
+            </div>
+            <div class="hero-stats animate-fade-in-delay-3">
+                <div class="stat-item">
+                    <i class="fas fa-book"></i>
+                    <h3 id="recipesCount">0</h3>
+                    <p>Recipes</p>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-users"></i>
+                    <h3 id="usersCount">0</h3>
+                    <p>Chefs</p>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-star"></i>
+                    <h3 id="reviewsCount">0</h3>
+                    <p>Reviews</p>
+                </div>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <i class="fas fa-chevron-down"></i>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <h2 class="section-title">Why Choose RecipeHub?</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Secure & Private</h3>
+                    <p>Your recipes and data are protected with enterprise-level security</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h3>Mobile Friendly</h3>
+                    <p>Access your recipes anywhere, anytime on any device</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-share-alt"></i>
+                    </div>
+                    <h3>Social Features</h3>
+                    <p>Follow chefs, save favorites, and share your culinary creations</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h3>Smart Search</h3>
+                    <p>Find recipes by ingredients, cuisine, difficulty, and more</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories Section -->
+    <section class="categories-section" id="categories">
+        <div class="container">
+            <h2 class="section-title">Explore by Category</h2>
+            <div class="categories-grid" id="categoriesGrid">
+                <div class="category-skeleton"></div>
+                <div class="category-skeleton"></div>
+                <div class="category-skeleton"></div>
+                <div class="category-skeleton"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Recipes Section -->
+    <section class="recipes-section" id="recipes">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Featured Recipes</h2>
+                <div class="recipe-filters">
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="easy">Easy</button>
+                    <button class="filter-btn" data-filter="medium">Medium</button>
+                    <button class="filter-btn" data-filter="hard">Hard</button>
+                </div>
+            </div>
+            <div class="recipes-grid" id="recipesGrid">
+                <div class="recipe-skeleton"></div>
+                <div class="recipe-skeleton"></div>
+                <div class="recipe-skeleton"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about-section" id="about">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-text">
+                    <h2 class="section-title">About RecipeHub</h2>
+                    <p class="about-description">
+                        RecipeHub is a professional recipe management platform built with cutting-edge technology. Our mission is to bring food lovers together and make cooking accessible to everyone.
+                    </p>
+                    <div class="about-features">
+                        <div class="about-feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Professional Recipe Management</span>
+                        </div>
+                        <div class="about-feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Community-Driven Content</span>
+                        </div>
+                        <div class="about-feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Advanced Search & Filtering</span>
+                        </div>
+                        <div class="about-feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Nutritional Information</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-image">
+                    <img src="https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=600&h=600&fit=crop" alt="Cooking">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3><i class="fas fa-utensils"></i> RecipeHub</h3>
+                    <p>Your ultimate destination for discovering and sharing amazing recipes.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#recipes">Recipes</a></li>
+                        <li><a href="#categories">Categories</a></li>
+                        <li><a href="#about">About</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="/swagger-ui.html" target="_blank">API Documentation</a></li>
+                        <li><a href="/h2-console" target="_blank">Database Console</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Newsletter</h4>
+                    <p>Subscribe to get weekly recipe inspiration</p>
+                    <div class="newsletter-form">
+                        <input type="email" placeholder="Your email">
+                        <button class="btn btn-primary"><i class="fas fa-paper-plane"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 RecipeHub. All rights reserved. Built with Spring Boot & Modern Web Technologies.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Authentication Modal -->
+    <div class="modal" id="authModal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeAuthModal()">&times;</span>
+            <div class="auth-container">
+                <div class="auth-tabs">
+                    <button class="auth-tab active" onclick="switchAuthTab('login')">Login</button>
+                    <button class="auth-tab" onclick="switchAuthTab('signup')">Sign Up</button>
+                </div>
+
+                <!-- Login Form -->
+                <form id="loginForm" class="auth-form">
+                    <h2>Welcome Back!</h2>
+                    <div class="form-group">
+                        <label><i class="fas fa-user"></i> Username</label>
+                        <input type="text" id="loginUsername" placeholder="Enter your username" required>
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-lock"></i> Password</label>
+                        <input type="password" id="loginPassword" placeholder="Enter your password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">
+                        <i class="fas fa-sign-in-alt"></i> Login
+                    </button>
+                    <p class="form-footer">
+                        Demo: <code>chef_mario / password123</code> or <code>admin / admin123</code>
+                    </p>
+                </form>
+
+                <!-- Signup Form -->
+                <form id="signupForm" class="auth-form" style="display: none;">
+                    <h2>Create Account</h2>
+                    <div class="form-group">
+                        <label><i class="fas fa-user"></i> Username</label>
+                        <input type="text" id="signupUsername" placeholder="Choose a username" required>
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-envelope"></i> Email</label>
+                        <input type="email" id="signupEmail" placeholder="Enter your email" required>
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-id-card"></i> Full Name</label>
+                        <input type="text" id="signupFullName" placeholder="Enter your full name" required>
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-lock"></i> Password</label>
+                        <input type="password" id="signupPassword" placeholder="Create a password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">
+                        <i class="fas fa-user-plus"></i> Sign Up
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recipe Detail Modal -->
+    <div class="modal" id="recipeModal">
+        <div class="modal-content modal-large">
+            <span class="modal-close" onclick="closeRecipeModal()">&times;</span>
+            <div id="recipeDetail"></div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
+
+    <!-- Create Recipe Modal -->
+    <div class="modal" id="createRecipeModal">
+        <div class="modal-content modal-large">
+            <span class="modal-close" onclick="closeCreateRecipeModal()">&times;</span>
+            <h2 style="text-align: center; margin-bottom: 2rem;">
+                <i class="fas fa-plus-circle"></i> Create New Recipe
+            </h2>
+            <form id="createRecipeForm" onsubmit="handleCreateRecipe(event)">
+                <div class="form-section">
+                    <h3><i class="fas fa-info-circle"></i> Basic Information</h3>
+                    <div class="form-group">
+                        <label>Recipe Title *</label>
+                        <input type="text" id="recipeTitle" placeholder="e.g., Delicious Chocolate Cake" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Description *</label>
+                        <textarea id="recipeDescription" rows="3" placeholder="Brief description of your recipe" required></textarea>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Category *</label>
+                            <select id="recipeCategory" class="form-control" required style="width: 100%; padding: 12px; border: 2px solid var(--light-color); border-radius: 10px; font-size: 1rem;">
+                                <option value="">Select a category</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Difficulty *</label>
+                            <select id="recipeDifficulty" class="form-control" required style="width: 100%; padding: 12px; border: 2px solid var(--light-color); border-radius: 10px; font-size: 1rem;">
+                                <option value="EASY">Easy</option>
+                                <option value="MEDIUM" selected>Medium</option>
+                                <option value="HARD">Hard</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Prep Time (minutes) *</label>
+                            <input type="number" id="recipePrepTime" placeholder="15" min="1" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Cook Time (minutes) *</label>
+                            <input type="number" id="recipeCookTime" placeholder="30" min="1" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Servings *</label>
+                            <input type="number" id="recipeServings" placeholder="4" min="1" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Image URL</label>
+                        <input type="url" id="recipeImageUrl" placeholder="https://example.com/image.jpg">
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3><i class="fas fa-carrot"></i> Ingredients</h3>
+                    <div id="ingredientsContainer"></div>
+                    <button type="button" class="btn btn-secondary" onclick="addIngredient()">
+                        <i class="fas fa-plus"></i> Add Ingredient
+                    </button>
+                </div>
+
+                <div class="form-section">
+                    <h3><i class="fas fa-list-ol"></i> Instructions</h3>
+                    <div class="form-group">
+                        <label>Cooking Instructions *</label>
+                        <textarea id="recipeInstructions" rows="8" placeholder="Step 1: Preheat the oven to 350°F&#10;Step 2: Mix flour and sugar..." required></textarea>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3><i class="fas fa-heartbeat"></i> Nutrition Information (Optional)</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Calories</label>
+                            <input type="number" id="recipeCalories" placeholder="250">
+                        </div>
+                        <div class="form-group">
+                            <label>Protein (g)</label>
+                            <input type="number" step="0.1" id="recipeProtein" placeholder="15.5">
+                        </div>
+                        <div class="form-group">
+                            <label>Carbs (g)</label>
+                            <input type="number" step="0.1" id="recipeCarbs" placeholder="30.2">
+                        </div>
+                        <div class="form-group">
+                            <label>Fat (g)</label>
+                            <input type="number" step="0.1" id="recipeFat" placeholder="10.5">
+                        </div>
+                        <div class="form-group">
+                            <label>Fiber (g)</label>
+                            <input type="number" step="0.1" id="recipeFiber" placeholder="3.5">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="checkbox-group">
+                    <input type="checkbox" id="recipePublished" checked>
+                    <label for="recipePublished">Publish recipe immediately</label>
+                </div>
+
+                <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                    <button type="submit" class="btn btn-primary" style="flex: 1;">
+                        <i class="fas fa-save"></i> Create Recipe
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="closeCreateRecipeModal()" style="flex: 1;">
+                        <i class="fas fa-times"></i> Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Review Modal -->
+    <div class="modal" id="reviewModal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeReviewModal()">&times;</span>
+            <h2 style="text-align: center; margin-bottom: 2rem;">
+                <i class="fas fa-star"></i> Write a Review
+            </h2>
+            <form id="reviewForm">
+                <div class="form-group">
+                    <label style="text-align: center; display: block; margin-bottom: 1rem;">Rating *</label>
+                    <div class="star-rating">
+                        <input type="radio" id="star5" name="rating" value="5">
+                        <label for="star5"><i class="fas fa-star"></i></label>
+                        <input type="radio" id="star4" name="rating" value="4">
+                        <label for="star4"><i class="fas fa-star"></i></label>
+                        <input type="radio" id="star3" name="rating" value="3">
+                        <label for="star3"><i class="fas fa-star"></i></label>
+                        <input type="radio" id="star2" name="rating" value="2">
+                        <label for="star2"><i class="fas fa-star"></i></label>
+                        <input type="radio" id="star1" name="rating" value="1">
+                        <label for="star1"><i class="fas fa-star"></i></label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Your Review</label>
+                    <textarea id="reviewComment" rows="5" placeholder="Share your thoughts about this recipe..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">
+                    <i class="fas fa-paper-plane"></i> Submit Review
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+    <script src="js/profile.js"></script>
+    <script src="js/create-recipe.js"></script>
+    <script>
+        // Add one ingredient field by default when create recipe modal opens
+        const originalShowCreateRecipeModal = showCreateRecipeModal;
+        showCreateRecipeModal = function() {
+            originalShowCreateRecipeModal();
+            if (document.querySelectorAll('.ingredient-item').length === 0) {
+                addIngredient();
+                addIngredient();
+                addIngredient();
+            }
+        };
+    </script>
+</body>
+
+</html>
